@@ -1,84 +1,114 @@
-# Turborepo starter
+# MappleTask
 
-This Turborepo starter is maintained by the Turborepo core team.
+MappleTask is a full-stack task management application built with a modern tech stack. It features a Next.js frontend, NestJS backend, and uses Prisma with PostgreSQL for data storage.
 
-## Using this example
+## Tech Stack
 
-Run the following command:
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **React 19** - UI library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Axios** - HTTP client
 
-```sh
-npx create-turbo@latest
+### Backend
+- **NestJS** - Progressive Node.js framework
+- **Prisma** - ORM for database access
+- **PostgreSQL** - Relational database
+- **Swagger** - API documentation
+
+### Infrastructure
+- **Turborepo** - Monorepo management
+- **TypeScript** - Static type checking
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+
+## Project Structure
+
+```
+mappletask/
+├── apps/
+│   ├── server/         # NestJS backend
+│   └── web/            # Next.js frontend
+├── packages/
+│   ├── eslint-config/  # Shared ESLint configuration
+│   ├── typescript-config/ # Shared TypeScript configuration
+│   └── ui/             # Shared UI components
+└── turbo.json          # Turborepo configuration
 ```
 
-## What's inside?
+## Getting Started
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- Node.js 18 or later
+- npm 11 or later
+- PostgreSQL database
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Environment Setup
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+1. Create a `.env` file in the `apps/server` directory:
 
-### Utilities
+```
+DATABASE_URL="postgresql://username:password@localhost:5432/mappletask?schema=public"
+JWT_SECRET="your-secret-key"
+PORT=3001
+```
 
-This Turborepo has some additional tools already setup for you:
+2. Create a `.env.local` file in the `apps/web` directory:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Generate Prisma client
+cd apps/server
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev
+
+# Return to root directory
+cd ../..
+```
+
+### Development
+
+```bash
+# Start all applications in development mode
+npm run dev
+
+# Frontend: http://localhost:3000
+# Backend: http://localhost:3001
+# API Documentation: http://localhost:3001/api
+```
 
 ### Build
 
-To build all apps and packages, run the following command:
+```bash
+# Build all applications
+npm run build
 
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
+# Start production server
+npm run start
 ```
 
-### Remote Caching
+## Features
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+- **User Authentication** - Register, login, and JWT-based authentication
+- **Product Management** - Create, read, update, and delete products
+- **Responsive Design** - Works on desktop and mobile devices
+- **API Documentation** - Swagger UI for API exploration
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## API Documentation
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+The API documentation is available at `http://localhost:3001/api` when the server is running.
 
-```
-cd my-turborepo
-npx turbo login
-```
+## License
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+This project is licensed under the MIT License - see the LICENSE file for details.

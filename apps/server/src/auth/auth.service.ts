@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
@@ -14,6 +14,11 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     const { email, password } = registerDto;
+
+    // Validate inputs
+    if (!email || !password) {
+      throw new BadRequestException('Email and password are required');
+    }
 
     // Check if user exists
     const existingUser = await this.prisma.user.findUnique({
@@ -44,6 +49,11 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
 
+    // Validate inputs
+    if (!email || !password) {
+      throw new BadRequestException('Email and password are required');
+    }
+
     // Find user
     const user = await this.prisma.user.findUnique({
       where: { email },
@@ -63,8 +73,13 @@ export class AuthService {
     // Generate JWT
     const payload = { sub: user.id, email: user.email };
     
+    // Return user data along with token
     return {
       access_token: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        email: user.email,
+      }
     };
   }
 }

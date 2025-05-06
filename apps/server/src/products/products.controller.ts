@@ -20,56 +20,54 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Get all products' })
+  @ApiResponse({ status: 200, description: 'Return all products' })
+  findAll() {
+    return this.productsService.findAll();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a product by ID' })
+  @ApiResponse({ status: 200, description: 'Return a product by ID' })
+  @ApiResponse({ status: 404, description: 'Product not found' })
+  findOne(@Param('id') id: string) {
+    return this.productsService.findOne(id);
+  }
+
+  @Post()
   @ApiOperation({ summary: 'Create a new product' })
   @ApiResponse({ status: 201, description: 'Product created successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtAuthGuard)
-  @Post()
   create(@Body() createProductDto: CreateProductDto) {
+    console.log('Create product request received:', createProductDto);
     return this.productsService.create(createProductDto);
   }
 
-  @ApiOperation({ summary: 'Get all products' })
-  @ApiQuery({ name: 'limit', required: false, description: 'Number of products to return', type: Number })
-  @ApiQuery({ name: 'offset', required: false, description: 'Number of products to skip', type: Number })
-  @ApiResponse({ status: 200, description: 'Returns all products' })
-  @Get()
-  findAll(@Query('limit') limit?: number, @Query('offset') offset?: number) {
-    return this.productsService.findAll(limit, offset);
-  }
-
-  @ApiOperation({ summary: 'Get product by ID' })
-  @ApiParam({ name: 'id', description: 'Product ID' })
-  @ApiResponse({ status: 200, description: 'Returns the product' })
-  @ApiResponse({ status: 404, description: 'Product not found' })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(id);
-  }
-
-  @ApiOperation({ summary: 'Update product' })
-  @ApiParam({ name: 'id', description: 'Product ID' })
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update a product by ID' })
   @ApiResponse({ status: 200, description: 'Product updated successfully' })
   @ApiResponse({ status: 404, description: 'Product not found' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+    console.log('Update product request received:', { id, data: updateProductDto });
     return this.productsService.update(id, updateProductDto);
   }
 
-  @ApiOperation({ summary: 'Delete product' })
-  @ApiParam({ name: 'id', description: 'Product ID' })
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiResponse({ status: 200, description: 'Product deleted successfully' })
   @ApiResponse({ status: 404, description: 'Product not found' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
   remove(@Param('id') id: string) {
+    console.log('Delete product request received for ID:', id);
     return this.productsService.remove(id);
   }
 }

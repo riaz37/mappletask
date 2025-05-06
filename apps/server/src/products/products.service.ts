@@ -28,20 +28,63 @@ export class ProductsService {
   }
 
   async create(createProductDto: CreateProductDto) {
+    console.log('Creating product with data:', createProductDto);
+    
+    // Ensure required fields are present
+    if (!createProductDto.name) {
+      throw new Error('Product name is required');
+    }
+    
+    if (createProductDto.price === undefined || createProductDto.price === null) {
+      throw new Error('Product price is required');
+    }
+    
+    // Set default values if not provided
+    const quantity = createProductDto.quantity ?? 0;
+    const status = createProductDto.status ?? (quantity > 0 ? 'in_stock' : 'out_of_stock');
+    
     return this.prisma.product.create({
       data: {
-        ...createProductDto,
-        quantity: createProductDto.stock || 0,
-        status: createProductDto.stock > 0 ? 'in_stock' : 'out_of_stock',
+        name: createProductDto.name,
+        price: createProductDto.price,
+        quantity: quantity,
+        status: status,
       },
     });
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
+    // Check if product exists
+    const product = await this.findOne(id);
+    
+    // Prepare update data
+    const updateData: any = {};
+    
+    if (updateProductDto.name !== undefined) {
+      updateData.name = updateProductDto.name;
+    }
+    
+    if (updateProductDto.price !== undefined) {
+      updateData.price = updateProductDto.price;
+    }
+    
+    if (updateProductDto.quantity !== undefined) {
+      updateData.quantity = updateProductDto.quantity;
+      
+      // Update status based on quantity if status is not explicitly provided
+      if (updateProductDto.status === undefined) {
+        updateData.status = updateProductDto.quantity > 0 ? 'in_stock' : 'out_of_stock';
+      }
+    }
+    
+    if (updateProductDto.status !== undefined) {
+      updateData.status = updateProductDto.status;
+    }
+    
     try {
       return await this.prisma.product.update({
         where: { id },
-        data: updateProductDto,
+        data: updateData,
       });
     } catch (error) {
       throw new NotFoundException(`Product with ID ${id} not found`);
