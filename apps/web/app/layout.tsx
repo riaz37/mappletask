@@ -1,13 +1,13 @@
-import './globals.css';
-import { Inter } from 'next/font/google';
-import { AuthProvider } from '@/context/auth-context';
-import { Navbar } from '@/components/navbar';
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { AuthProvider } from "@/context/auth-context";
+import { Navbar } from "@/components/layout/navbar";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Inventory Management',
-  description: 'A simple inventory management system',
+  title: "Inventory Management",
+  description: "A simple inventory management system",
 };
 
 export default function RootLayout({
