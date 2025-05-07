@@ -17,11 +17,18 @@ function LoginForm() {
 
   // Get the redirect path from URL query params
   const fromPath = searchParams.get("from");
+  // Ensure the path is properly decoded and has a fallback
   const redirectPath = fromPath ? decodeURIComponent(fromPath) : "/products";
+
+  // Debug the redirect path
+  useEffect(() => {
+    console.log("Redirect path:", redirectPath);
+  }, [redirectPath]);
 
   // If already authenticated, redirect
   useEffect(() => {
     if (isAuthenticated) {
+      console.log("User is authenticated, redirecting to:", redirectPath);
       router.push(redirectPath);
     }
   }, [isAuthenticated, redirectPath, router]);
@@ -33,8 +40,17 @@ function LoginForm() {
 
     try {
       await login({ email, password });
-      router.push(redirectPath);
+      console.log("Login successful, redirecting to:", redirectPath);
+      
+      // Refresh the router to update the authentication state
+      router.refresh();
+      
+      // Then redirect after a short delay
+      setTimeout(() => {
+        router.push(redirectPath);
+      }, 100);
     } catch (err: any) {
+      console.error("Login error:", err);
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {
       setIsSubmitting(false);
