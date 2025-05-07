@@ -10,10 +10,10 @@ const protectedRoutes = [
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Check if the path is a protected route or is exactly '/products'
+  // Check if the path is a protected route (but NOT the main products listing)
   const isProtectedRoute = protectedRoutes.some(route => 
     pathname.startsWith(route)
-  ) || pathname === '/products' || pathname.includes('/edit');
+  ) || pathname.includes('/edit');
   
   // Check for authentication cookie
   const authCookie = request.cookies.get('auth_token');
@@ -30,7 +30,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/products',
     '/products/:path*',
   ],
 };
