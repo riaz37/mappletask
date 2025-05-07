@@ -41,10 +41,9 @@ function LoginForm() {
     try {
       await login({ email, password });
       console.log("Login successful, redirecting to:", redirectPath);
-      
-      // Refresh the router to update the authentication state
+
       router.refresh();
-      
+
       // Then redirect after a short delay
       setTimeout(() => {
         router.push(redirectPath);
