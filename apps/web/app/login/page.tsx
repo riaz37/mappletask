@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/context/auth-context';
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/auth-context";
 
 // Create a component that uses useSearchParams
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, isAuthenticated } = useAuth();
-  
+
   // Get the redirect path from URL query params and ensure it's properly decoded
-  const fromPath = searchParams.get('from');
-  const redirectPath = fromPath ? decodeURIComponent(fromPath) : '/products';
-  
+  const fromPath = searchParams.get("from");
+  const redirectPath = fromPath ? decodeURIComponent(fromPath) : "/products";
+
   // If already authenticated, redirect
   useEffect(() => {
     if (isAuthenticated) {
@@ -30,19 +30,18 @@ function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
-    
+    setError("");
+
     try {
       await login({ email, password });
-      
-      // Add a small delay before redirecting to ensure auth state is updated
+
       setTimeout(() => {
-        console.log('Redirecting to:', redirectPath);
+        console.log("Redirecting to:", redirectPath);
         router.push(redirectPath);
       }, 100);
     } catch (err: any) {
-      console.error('Login error:', err);
-      setError(err.response?.data?.message || 'Invalid email or password');
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Invalid email or password");
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +55,7 @@ function LoginForm() {
             {error}
           </div>
         )}
-        
+
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label
