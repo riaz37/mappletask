@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
+import { Loading } from "@/components/ui/loading";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -120,7 +121,14 @@ function LoginForm() {
               className="w-full bg-black text-white hover:bg-gray-800"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Signing in..." : "Sign in"}
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loading size="sm" className="mr-2" />
+                  Signing in...
+                </span>
+              ) : (
+                "Sign in"
+              )}
             </Button>
           </div>
         </form>
@@ -155,11 +163,7 @@ function LoginFormFallback() {
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <div className="animate-pulse space-y-6">
-          <div className="h-10 bg-gray-200 rounded"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-        </div>
+        <Loading size="lg" text="Loading..." />
       </div>
     </div>
   );

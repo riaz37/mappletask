@@ -7,6 +7,7 @@ import { useAuth } from '@/context/auth-context';
 import { Product, ProductFormData } from '@/types';
 import ProductForm from '@/components/products/product-form';
 import { use } from 'react';
+import { Loading } from "@/components/ui/loading";
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -54,7 +55,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   };
   
   if (authLoading || isLoading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return (
+      <div className="max-w-4xl mx-auto py-8">
+        <Loading size="lg" variant="dots" text="Loading product data..." />
+      </div>
+    );
   }
   
   if (!isAuthenticated) {

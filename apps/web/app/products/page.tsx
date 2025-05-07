@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { getProducts } from '@/lib/api';
-import { Product } from '@/types';
-import { formatCurrency } from '@/lib/formatters';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { getProducts } from "@/lib/api";
+import { Product } from "@/types";
+import { formatCurrency } from "@/lib/formatters";
+import { Loading } from "@/components/ui/loading";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -18,7 +19,7 @@ export default function ProductsPage() {
         const data = await getProducts();
         setProducts(data);
       } catch (err) {
-        setError('Failed to load products');
+        setError("Failed to load products");
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -29,15 +30,17 @@ export default function ProductsPage() {
   }, []);
 
   if (isLoading) {
-    return <div className="text-center py-10">Loading products...</div>;
+    return (
+      <div className="max-w-4xl mx-auto py-8">
+        <Loading size="lg" text="Loading products..." />
+      </div>
+    );
   }
 
   if (error) {
     return (
       <div className="max-w-4xl mx-auto py-8">
-        <div className="bg-red-50 text-red-700 p-4 rounded-md">
-          {error}
-        </div>
+        <div className="bg-red-50 text-red-700 p-4 rounded-md">{error}</div>
       </div>
     );
   }
@@ -75,10 +78,13 @@ export default function ProductsPage() {
           </Button>
         </Link>
       </div>
-      
+
       <div className="grid gap-6 md:grid-cols-2">
         {products.map((product) => (
-          <div key={product.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+          <div
+            key={product.id}
+            className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+          >
             <h2 className="text-lg font-medium">{product.name}</h2>
             <div className="mt-2 text-gray-600">
               <p>{formatCurrency(product.price)}</p>
@@ -88,11 +94,6 @@ export default function ProductsPage() {
               <Link href={`/products/${product.id}`}>
                 <Button className="bg-white text-black border border-gray-300 hover:bg-gray-100 text-sm">
                   View Details
-                </Button>
-              </Link>
-              <Link href={`/products/${product.id}/edit`}>
-                <Button className="bg-white text-black border border-gray-300 hover:bg-gray-100 text-sm">
-                  Edit
                 </Button>
               </Link>
             </div>

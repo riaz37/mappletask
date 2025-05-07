@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { ProductFormData } from '@/types';
+import { Loading } from "@/components/ui/loading";
+import { Button } from "@/components/ui/button"; 
+import router from 'next/router';
 
 interface ProductFormProps {
   initialData?: ProductFormData;
@@ -94,13 +97,30 @@ export default function ProductForm({ initialData, onSubmit, isSubmitting }: Pro
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full bg-black text-white py-2 text-sm rounded hover:opacity-90 transition disabled:opacity-50"
-      >
-        {isSubmitting ? 'Saving...' : 'Save Product'}
-      </button>
+      <div className="mt-6 flex justify-end">
+        <Button
+          onClick={() => router.back()}
+          variant="outline"
+          className="mr-4"
+          disabled={isSubmitting}
+        >
+          Cancel
+        </Button>
+        <Button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="border border-primary"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center">
+              <Loading size="sm" variant="dots" className="mr-2" />
+              {initialData ? "Saving..." : "Creating..."}
+            </span>
+          ) : (
+            initialData ? "Save Changes" : "Create Product"
+          )}
+        </Button>
+      </div>
     </form>
   );
 }

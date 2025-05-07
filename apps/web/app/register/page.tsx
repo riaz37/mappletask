@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"; 
 import { register } from "@/lib/api";
+import { Loading } from "@/components/ui/loading";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -37,6 +38,16 @@ export default function RegisterPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (isSubmitting) {
+    return (
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <Loading size="lg" variant="spinner" text="Loading..." />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -124,7 +135,14 @@ export default function RegisterPage() {
                 className="w-full bg-black text-white hover:bg-gray-800"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Creating account..." : "Register"}
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center">
+                    <Loading size="sm" variant="dots" className="mr-2" />
+                    Creating account...
+                  </span>
+                ) : (
+                  "Create account"
+                )}
               </Button>
             </div>
           </form>

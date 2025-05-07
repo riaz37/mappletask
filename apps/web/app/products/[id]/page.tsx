@@ -6,6 +6,7 @@ import { getProduct, deleteProduct } from '@/lib/api';
 import { Product } from '@/types';
 import Link from 'next/link';
 import { use } from 'react';
+import { Loading } from "@/components/ui/loading";
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -45,7 +46,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   if (loading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return (
+      <div className="max-w-4xl mx-auto py-8">
+        <Loading size="lg" variant="pulse" text="Loading product details..." />
+      </div>
+    );
   }
 
   if (error) {

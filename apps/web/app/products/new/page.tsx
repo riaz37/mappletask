@@ -8,6 +8,7 @@ import ProductForm from '@/components/products/product-form';
 import { useAuth } from '@/context/auth-context';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { Loading } from "@/components/ui/loading";
 
 export default function NewProductPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,9 +40,11 @@ export default function NewProductPage() {
 
   // Show loading state while checking authentication
   if (isLoading) {
-    return <div className="flex justify-center items-center min-h-[60vh]">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
-    </div>;
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <Loading size="lg" variant="spinner" text="Loading..." />
+      </div>
+    );
   }
 
   // Don't render the form if not authenticated
