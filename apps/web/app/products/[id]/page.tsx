@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { getProduct, deleteProduct } from '@/lib/api';
 import { Product } from '@/types';
 import Link from 'next/link';
+import { use } from 'react';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,7 +17,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const data = await getProduct(params.id);
+        const data = await getProduct(id);
         setProduct(data);
       } catch (err) {
         setError('Failed to load product');
@@ -26,7 +28,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [id]);
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this product?')) {
@@ -34,7 +36,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     }
 
     try {
-      await deleteProduct(params.id);
+      await deleteProduct(id);
       router.push('/products');
     } catch (err) {
       setError('Failed to delete product');

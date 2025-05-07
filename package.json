@@ -1,6 +1,7 @@
 {
   "name": "mappletask",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -16,7 +17,6 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@11.3.0",
   "workspaces": [
     "apps/*",
     "packages/*"

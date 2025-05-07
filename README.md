@@ -5,18 +5,21 @@ MappleTask is a full-stack task management application built with a modern tech 
 ## Tech Stack
 
 ### Frontend
+
 - **Next.js 15** - React framework with App Router
 - **React 19** - UI library
 - **Tailwind CSS** - Utility-first CSS framework
 - **Axios** - HTTP client
 
 ### Backend
+
 - **NestJS** - Progressive Node.js framework
 - **Prisma** - ORM for database access
 - **PostgreSQL** - Relational database
 - **Swagger** - API documentation
 
 ### Infrastructure
+
 - **Turborepo** - Monorepo management
 - **TypeScript** - Static type checking
 - **ESLint** - Code linting
@@ -54,7 +57,7 @@ JWT_SECRET="your-secret-key"
 PORT=3001
 ```
 
-2. Create a `.env.local` file in the `apps/web` directory:
+2. Create a `.env` file in the `apps/web` directory:
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:3001
@@ -109,6 +112,9 @@ npm run start
 
 The API documentation is available at `http://localhost:3001/api` when the server is running.
 
+```
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+```

@@ -6,8 +6,10 @@ import { getProduct, updateProduct } from '@/lib/api';
 import { useAuth } from '@/context/auth-context';
 import { Product, ProductFormData } from '@/types';
 import ProductForm from '@/components/products/product-form';
+import { use } from 'react';
 
-export default function EditProductPage({ params }: { params: { id: string } }) {
+export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,7 +25,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     
     const fetchProduct = async () => {
       try {
-        const data = await getProduct(params.id);
+        const data = await getProduct(id);
         setProduct(data);
       } catch (err) {
         setError('Failed to load product');
@@ -36,12 +38,12 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     if (isAuthenticated) {
       fetchProduct();
     }
-  }, [params.id, isAuthenticated, authLoading, router]);
+  }, [id, isAuthenticated, authLoading, router]);
   
   const handleSubmit = async (data: ProductFormData) => {
     setIsSubmitting(true);
     try {
-      await updateProduct(params.id, data);
+      await updateProduct(id, data);
       router.push('/products');
     } catch (err) {
       setError('Failed to update product');
