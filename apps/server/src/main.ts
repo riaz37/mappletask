@@ -7,15 +7,18 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const expressApp = express();
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
-  
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressApp),
+  );
+
   // Enable CORS
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  
+
   // Enable validation
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,7 +26,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  
+
   // Setup Swagger
   const config = new DocumentBuilder()
     .setTitle('MappleTask API')
@@ -43,7 +46,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  
+
   await app.listen(process.env.PORT || 3001);
   console.log(`Application is running on: ${await app.getUrl()}`);
   console.log(`Swagger is running on: ${await app.getUrl()}/api`);

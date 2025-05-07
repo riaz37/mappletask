@@ -7,9 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
-  Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -55,7 +59,10 @@ export class ProductsController {
   @ApiBearerAuth('JWT-auth')
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    console.log('Update product request received:', { id, data: updateProductDto });
+    console.log('Update product request received:', {
+      id,
+      data: updateProductDto,
+    });
     return this.productsService.update(id, updateProductDto);
   }
 
