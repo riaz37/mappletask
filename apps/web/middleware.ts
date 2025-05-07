@@ -4,16 +4,16 @@ import type { NextRequest } from 'next/server';
 // Protected routes that require authentication
 const protectedRoutes = [
   '/products/new',
-  '/products',
+  '/products/edit',
 ];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Check if the path is a protected route or contains '/edit'
+  // Check if the path is a protected route or is exactly '/products'
   const isProtectedRoute = protectedRoutes.some(route => 
     pathname.startsWith(route)
-  ) || pathname.includes('/edit');
+  ) || pathname === '/products' || pathname.includes('/edit');
   
   // Check for authentication cookie
   const authCookie = request.cookies.get('auth_token');
