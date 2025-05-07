@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   return (
@@ -15,11 +15,6 @@ export default function HomePage() {
           <Link href="/products">
             <Button className="w-full sm:w-auto bg-black text-white hover:bg-gray-800">
               View Products
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button className="w-full sm:w-auto bg-white text-black border border-gray-300 hover:bg-gray-100">
-              Login
             </Button>
           </Link>
         </div>
