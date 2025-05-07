@@ -44,7 +44,7 @@ mappletask/
 ### Prerequisites
 
 - Node.js 18 or later
-- npm 11 or later
+- Yarn 1.22 or later
 - PostgreSQL database
 
 ### Environment Setup
@@ -67,14 +67,14 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 
 ```bash
 # Install dependencies
-npm install
+yarn install
 
 # Generate Prisma client
 cd apps/server
-npx prisma generate
+yarn prisma generate
 
 # Run database migrations
-npx prisma migrate dev
+yarn prisma migrate dev
 
 # Return to root directory
 cd ../..
@@ -84,7 +84,7 @@ cd ../..
 
 ```bash
 # Start all applications in development mode
-npm run dev
+yarn dev
 
 # Frontend: http://localhost:3000
 # Backend: http://localhost:3001
@@ -95,11 +95,36 @@ npm run dev
 
 ```bash
 # Build all applications
-npm run build
+yarn build
 
 # Start production server
-npm run start
+yarn start
 ```
+
+## Cloud Deployment
+
+### Vercel (Frontend)
+
+1. Connect your GitHub repository to Vercel
+2. Configure the project:
+   - Root Directory: `apps/web`
+   - Build Command: `cd ../.. && yarn turbo run build --filter=web...`
+   - Output Directory: `.next`
+3. Set environment variables:
+   - `NEXT_PUBLIC_API_URL`: Your backend URL
+
+### Render (Backend)
+
+1. Create a Web Service on Render
+2. Connect your GitHub repository
+3. Configure the service:
+   - Root Directory: `apps/server`
+   - Build Command: `cd ../.. && yarn install && yarn turbo run build --filter=server...`
+   - Start Command: `cd apps/server && node dist/main`
+4. Set environment variables:
+   - `DATABASE_URL`: Your PostgreSQL connection string
+   - `JWT_SECRET`: Your secret key for JWT
+   - `PORT`: `10000` (Render default)
 
 ## Features
 
@@ -111,8 +136,6 @@ npm run start
 ## API Documentation
 
 The API documentation is available at `http://localhost:3001/api` when the server is running.
-
-```
 
 ## License
 
