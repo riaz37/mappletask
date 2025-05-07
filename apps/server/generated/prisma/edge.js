@@ -134,7 +134,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/media/riaz37/WebDevelopment/mappletask/apps/server/generated/prisma",
+      "value": "/media/riaz37/WebDevelopment/mappletask/mappletask/apps/server/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -148,7 +148,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/media/riaz37/WebDevelopment/mappletask/apps/server/prisma/schema.prisma",
+    "sourceFilePath": "/media/riaz37/WebDevelopment/mappletask/mappletask/apps/server/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

@@ -27,6 +27,9 @@ export class ProductsController {
   @Get()
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ status: 200, description: 'Return all products' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.productsService.findAll();
   }
