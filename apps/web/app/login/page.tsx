@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
@@ -12,18 +12,27 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { login, isAuthenticated } = useAuth();
+  const [redirectPath, setRedirectPath] = useState("/products");
 
-  // Get the redirect path from URL query params
-  const fromPath = searchParams.get("from");
-  // Ensure the path is properly decoded and has a fallback
-  const redirectPath = fromPath ? decodeURIComponent(fromPath) : "/products";
-
-  // Debug the redirect path
+  // Get the redirect path from cookie on mount
   useEffect(() => {
-    console.log("Redirect path:", redirectPath);
-  }, [redirectPath]);
+    // Check for redirect cookie
+    const cookies = document.cookie.split(";");
+    const redirectCookie = cookies.find((cookie) =>
+      cookie.trim().startsWith("redirectTo=")
+    );
+
+    if (redirectCookie) {
+      const path = redirectCookie.split("=")[1];
+      if (path) {
+        setRedirectPath(decodeURIComponent(path));
+        // Clear the cookie after reading it
+        document.cookie =
+          "redirectTo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+    }
+  }, []);
 
   // If already authenticated, redirect
   useEffect(() => {
@@ -42,12 +51,8 @@ function LoginForm() {
       await login({ email, password });
       console.log("Login successful, redirecting to:", redirectPath);
 
-      router.refresh();
-
-      // Then redirect after a short delay
-      setTimeout(() => {
-        router.push(redirectPath);
-      }, 100);
+      // Simple redirect without setTimeout
+      router.push(redirectPath);
     } catch (err: any) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Invalid email or password");
