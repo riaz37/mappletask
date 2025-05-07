@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
 
-// Create a component that uses useSearchParams
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,18 +17,11 @@ function LoginForm() {
 
   // Get the redirect path from URL query params
   const fromPath = searchParams.get("from");
-  // Ensure the path is properly decoded and has a fallback
   const redirectPath = fromPath ? decodeURIComponent(fromPath) : "/products";
-  
-  // Debug the redirect path
-  useEffect(() => {
-    console.log("Redirect path:", redirectPath);
-  }, [redirectPath]);
 
   // If already authenticated, redirect
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("User is authenticated, redirecting to:", redirectPath);
       router.push(redirectPath);
     }
   }, [isAuthenticated, redirectPath, router]);
@@ -41,12 +33,8 @@ function LoginForm() {
 
     try {
       await login({ email, password });
-      console.log("Login successful, redirecting to:", redirectPath);
-      
-      // Use router.replace instead of push to avoid history issues
-      router.replace(redirectPath);
+      router.push(redirectPath);
     } catch (err: any) {
-      console.error("Login error:", err);
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {
       setIsSubmitting(false);
@@ -141,21 +129,6 @@ function LoginForm() {
   );
 }
 
-// Loading fallback component
-function LoginFormFallback() {
-  return (
-    <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <div className="animate-pulse space-y-6">
-          <div className="h-10 bg-gray-200 rounded"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-          <div className="h-10 bg-gray-200 rounded"></div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Main page component
 export default function LoginPage() {
   return (
@@ -166,9 +139,7 @@ export default function LoginPage() {
         </h2>
       </div>
 
-      <Suspense fallback={<LoginFormFallback />}>
-        <LoginForm />
-      </Suspense>
+      <LoginForm />
     </div>
   );
 }
