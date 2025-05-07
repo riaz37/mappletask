@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(response.user);
       
       // Store the token in a cookie that the middleware can access
-      document.cookie = `auth_token=${response.token}; path=/; max-age=86400; SameSite=Lax`;
+      document.cookie = `auth_token=${response.access_token}; path=/; max-age=86400; SameSite=Lax`;
       
       return response;
     } finally {

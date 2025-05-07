@@ -32,7 +32,7 @@ export const login = async (credentials: LoginCredentials): Promise<AuthResponse
   const response = await api.post('/auth/login', credentials);
   return {
     user: response.data.user,
-    token: response.data.access_token
+    access_token: response.data.access_token
   };
 };
 
