@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -129,6 +129,21 @@ function LoginForm() {
   );
 }
 
+// Loading fallback component
+function LoginFormFallback() {
+  return (
+    <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="animate-pulse space-y-6">
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Main page component
 export default function LoginPage() {
   return (
@@ -139,7 +154,9 @@ export default function LoginPage() {
         </h2>
       </div>
 
-      <LoginForm />
+      <Suspense fallback={<LoginFormFallback />}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
