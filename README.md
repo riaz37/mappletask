@@ -1,6 +1,6 @@
 # MappleTask
 
-MappleTask is a full-stack task management application built with a modern tech stack. It features a Next.js frontend, NestJS backend, and uses Prisma with PostgreSQL for data storage.
+MappleTask is a full-stack product management application built with a modern tech stack. It features a Next.js frontend, NestJS backend, and uses Prisma with PostgreSQL for data storage.
 
 ## Tech Stack
 
