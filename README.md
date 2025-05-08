@@ -136,8 +136,3 @@ yarn start
 ## API Documentation
 
 The API documentation is available at `http://localhost:3001/api` when the server is running.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-```
